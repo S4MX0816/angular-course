@@ -7,5 +7,5 @@ import { ServerElement } from './server-element.model';
   styleUrls: ['./server-element.component.css'],
 })
 export class ServerElementComponent {
-  @Input() element: ServerElement = {} as ServerElement;
+  @Input('srvElement') element: ServerElement = {} as ServerElement;
 }
