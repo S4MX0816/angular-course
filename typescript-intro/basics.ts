@@ -32,9 +32,21 @@ people = [
 ];
 
 // Type inference
+
 let course = "React the complete guide";
 // course = 1234;
 
 // Union Types
+
 let courseV2: string | number = "React the complete guide";
 courseV2 = 1234;
+
+// Function and Types
+
+function add(a: number, b: number) {
+  return a + b;
+}
+
+function printOutput(value: any) {
+  console.log(value);
+}
