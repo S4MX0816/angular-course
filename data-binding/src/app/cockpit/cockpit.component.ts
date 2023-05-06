@@ -8,7 +8,7 @@ import { EventData } from '../server-element/server-element.model';
 })
 export class CockpitComponent {
   @Output() serverCreated = new EventEmitter<EventData>();
-  @Output() blueprintCreated = new EventEmitter<EventData>();
+  @Output('bpCreated') blueprintCreated = new EventEmitter<EventData>();
 
   newServerName = '';
   newServerContent = '';
