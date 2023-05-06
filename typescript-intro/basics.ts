@@ -65,3 +65,40 @@ const updateArray = insertAtBeginning(demoArray, -1); // [-1, 1, 2, 3]
 
 const stringArr = insertAtBeginning(["b", "c", "d"], "a");
 stringArr[0].split("");
+
+// Classes
+
+class Student {
+  //   firstName: string;
+  //   lastName: string;
+  //   age: number;
+  //   private courses: string[];
+
+  constructor(
+    public firstName: string,
+    public lastName: string,
+    public age: number,
+    private courses: string[]
+  ) {
+    // this.firstName = first;
+    // this.lastName = last;
+    // this.age = age;
+    // this.courses = courses;
+  }
+
+  enrol(courseName: string) {
+    this.courses.push(courseName);
+  }
+
+  listCourses() {
+    return this.courses.slice();
+  }
+}
+
+const student = new Student("Sanyam", "Trehan", 25, ["Maths", "CSE"]);
+student.enrol("Angular");
+
+// student.courses => Maths, CSE, Angular
+
+// student.courses // Throw error as courses is now private
+student.listCourses();
