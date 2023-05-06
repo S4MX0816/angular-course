@@ -50,3 +50,18 @@ function add(a: number, b: number) {
 function printOutput(value: any) {
   console.log(value);
 }
+
+// Generics
+
+function insertAtBeginning<T>(array: T[], value: T) {
+  const newArray = [value, ...array];
+  return newArray;
+}
+
+const demoArray = [1, 2, 3];
+const updateArray = insertAtBeginning(demoArray, -1); // [-1, 1, 2, 3]
+
+// updateArray[0].split(""); // get runtime error if not using generic type
+
+const stringArr = insertAtBeginning(["b", "c", "d"], "a");
+stringArr[0].split("");
