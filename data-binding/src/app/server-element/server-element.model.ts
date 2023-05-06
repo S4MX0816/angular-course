@@ -5,3 +5,5 @@ export class ServerElement {
     public content: string
   ) {}
 }
+
+export type EventData = { serverName: string; serverContent: string };
