@@ -19,11 +19,13 @@ isInstructor = true;
 let hobbies: string[];
 hobbies = ["Music", "Gaming"];
 
-let person: { name: string; age: number };
+type Person = { name: string; age: number };
+
+let person: Person;
 person = { name: "Sanyam", age: 25 };
 // person = { isEmployee: true };
 
-let people: { name: string; age: number }[];
+let people: Person[];
 people = [
   { name: "Sanyam", age: 25 },
   { name: "Naveen", age: 24 },
