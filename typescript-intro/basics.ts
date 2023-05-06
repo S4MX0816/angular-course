@@ -128,5 +128,5 @@ class Instructor implements Human {
 
   greet() {
     console.log("Hello");
-  },
+  }
 }
