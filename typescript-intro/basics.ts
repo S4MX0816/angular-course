@@ -102,3 +102,31 @@ student.enrol("Angular");
 
 // student.courses // Throw error as courses is now private
 student.listCourses();
+
+// Interfaces
+
+interface Human {
+  firstName: string;
+  age: number;
+
+  greet: () => void;
+}
+
+let sam: Human;
+sam = {
+  firstName: "Sanyam",
+  age: 25,
+
+  greet() {
+    console.log("Hello");
+  },
+};
+
+class Instructor implements Human {
+  firstName: string;
+  age: number;
+
+  greet() {
+    console.log("Hello");
+  },
+}
