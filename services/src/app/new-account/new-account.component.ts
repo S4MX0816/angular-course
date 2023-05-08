@@ -16,6 +16,9 @@ export class NewAccountComponent {
   constructor() {
     // this.loggingService = inject(LoggingService);
     this.accountsService = inject(AccountsService);
+    this.accountsService.statusUpdated.subscribe((status) => {
+      alert('New Status: ' + status);
+    });
   }
 
   onCreateAccount(accountName: string, accountStatus: string) {
