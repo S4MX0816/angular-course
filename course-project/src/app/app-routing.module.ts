@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
 
 import { RecipesComponent } from './recipes/recipes.component';
-import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const appRoutes: Route[] = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   { path: 'recipes', component: RecipesComponent },
   {
     path: 'shopping-list',
-    component: ShoppingEditComponent,
+    component: ShoppingListComponent,
   },
 ];
 
