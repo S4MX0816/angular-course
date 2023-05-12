@@ -19,11 +19,15 @@ interface SignUpForm {
 export class AppComponent implements OnInit {
   genders = ['male', 'female'];
   signUpForm: FormGroup<SignUpForm>;
+  forbiddenUsernames = ['chris', 'anna'];
 
   ngOnInit(): void {
     this.signUpForm = new FormGroup<SignUpForm>({
       userData: new FormGroup({
-        username: new FormControl(null, Validators.required),
+        username: new FormControl(null, [
+          Validators.required,
+          this.forbiddenNames.bind(this),
+        ]),
         email: new FormControl(null, [Validators.required, Validators.email]),
       }),
       gender: new FormControl('male'),
@@ -38,5 +42,13 @@ export class AppComponent implements OnInit {
   onAddHobby(): void {
     const control: hobby = new FormControl(null, Validators.required);
     this.signUpForm.controls.hobbies.push(control);
+  }
+
+  forbiddenNames(control: FormControl): { [k: string]: boolean } {
+    if (!this.forbiddenUsernames.indexOf(control.value)) {
+      return { nameIsForbidden: true };
+    }
+
+    return null;
   }
 }
