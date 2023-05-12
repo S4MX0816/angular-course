@@ -47,6 +47,21 @@
             }}
           </label>
         </div>
+        <div formArrayName="hobbies">
+          <h4>Your Hobbies</h4>
+          <button class="btn btn-default" type="button" (click)="onAddHobby()">
+            Add hobby
+          </button>
+          <div
+            class="form-group"
+            *ngFor="
+              let hobbyControl of signUpForm.controls.hobbies.controls;
+              let i = index
+            "
+          >
+            <input type="text" [formControlName]="i" />
+          </div>
+        </div>
         <p *ngIf="signUpForm.invalid && signUpForm.touched" class="help-block">
           Please enter valid data!
         </p>
