@@ -13,6 +13,76 @@
            Upon submitting the form, you should simply print the Value of the Form to the Console.
            Optionally, display it in your template.
       -->
+      <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <div class="form-group">
+          <label for="mail">Mail</label>
+          <input
+            class="form-control"
+            id="mail"
+            type="email"
+            name="mail"
+            ngModel
+            email
+            required
+            #email="ngModel"
+          />
+          <span class="help-block" *ngIf="email.invalid && email.touched"
+            >Please enter a valid email</span
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="subscription">Subscription</label>
+          <select
+            class="form-control"
+            name="subscription"
+            id="subscription"
+            [ngModel]="selectedSubscription"
+          >
+            <option
+              *ngFor="let subscription of subscriptions"
+              [value]="subscription"
+            >
+              {{ subscription }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            class="form-control"
+            id="password"
+            type="password"
+            name="password"
+            ngModel
+            required
+            #password="ngModel"
+          />
+          <span class="help-block" *ngIf="password.invalid && password.touched"
+            >Please enter a valid email</span
+          >
+        </div>
+
+        <p class="help-block" *ngIf="f.invalid && f.touched">
+          This form is invalid
+        </p>
+
+        <button class="btn btn-primary" type="submit" [disabled]="f.invalid">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row" *ngIf="formSubmitted">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Mail: {{ res.email }}</p>
+      <p>Subscription: {{ res.subscription }}</p>
+      <p>Password: {{ res.password }}</p>
     </div>
   </div>
 </div>
