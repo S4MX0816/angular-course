@@ -14,6 +14,78 @@
 
           Upon submitting the form, simply print the value to the console
       -->
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Project Name</label>
+          <input
+            class="form-control"
+            type="text"
+            id="name"
+            formControlName="name"
+          />
+          <p
+            *ngIf="
+              projectForm.controls.name.invalid &&
+              projectForm.controls.name.touched
+            "
+            class="help-block"
+          >
+            <span *ngIf="projectForm.controls.name.errors['forbiddenName']"
+              >This name is invalid!</span
+            >
+            <span *ngIf="projectForm.controls.name.errors['required']">
+              This field is required
+            </span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Mail</label>
+          <input
+            class="form-control"
+            type="email"
+            id="email"
+            formControlName="email"
+          />
+          <p
+            *ngIf="
+              projectForm.controls.email.invalid &&
+              projectForm.controls.email.touched
+            "
+            class="help-block"
+          >
+            Please enter a valid project email!
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Project Status</label>
+          <select class="form-control" id="status" formControlName="status">
+            <option *ngFor="let status of projectStatuses" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="projectForm.invalid"
+        >
+          Add Project
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row" *ngIf="formSubmitted">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Project Name: {{ res.name }}</p>
+      <p>Email: {{ res.email }}</p>
+      <p>Project Status: {{ res.status }}</p>
     </div>
   </div>
 </div>
