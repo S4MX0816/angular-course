@@ -10,7 +10,9 @@ import { Post } from './post.model';
 })
 export class AppComponent {
   loadedPosts: Post[] = [];
-  firebaseUrl = 'https://angular-course-8c9bb-default-rtdb.firebaseio.com';
+  firebaseUrl =
+    'https://angular-course-8c9bb-default-rtdb.firebaseio.com/posts.json';
+  isFetching = false;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +23,7 @@ export class AppComponent {
   onCreatePost(postData: Post) {
     // Send Http request
     this.http
-      .post<{ name: string }>(`${this.firebaseUrl}/posts.json`, postData)
+      .post<{ name: string }>(this.firebaseUrl, postData)
       .subscribe((responseData) => console.log(responseData));
   }
 
@@ -35,8 +37,9 @@ export class AppComponent {
   }
 
   private fetchPosts() {
+    this.isFetching = true;
     this.http
-      .get<{ [k: string]: Post }>(`${this.firebaseUrl}/posts.json`)
+      .get<{ [k: string]: Post }>(this.firebaseUrl)
       .pipe(
         map((responseData) => {
           const postsArr: Post[] = [];
@@ -49,6 +52,7 @@ export class AppComponent {
         })
       )
       .subscribe((posts) => {
+        this.isFetching = false;
         this.loadedPosts = posts;
       });
   }
