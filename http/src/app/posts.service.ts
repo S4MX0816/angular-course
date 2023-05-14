@@ -17,19 +17,16 @@ export class PostsService {
   }
 
   fetchPosts() {
-    this.http
-      .get<{ [k: string]: Post }>(this.firebaseUrl)
-      .pipe(
-        map((responseData) => {
-          const postsArr: Post[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)) {
-              postsArr.push({ ...responseData[key], id: key });
-            }
+    return this.http.get<{ [k: string]: Post }>(this.firebaseUrl).pipe(
+      map((responseData) => {
+        const postsArr: Post[] = [];
+        for (const key in responseData) {
+          if (responseData.hasOwnProperty(key)) {
+            postsArr.push({ ...responseData[key], id: key });
           }
-          return postsArr;
-        })
-      )
-      .subscribe((posts) => {});
+        }
+        return postsArr;
+      })
+    );
   }
 }
