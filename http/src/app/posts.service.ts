@@ -11,9 +11,7 @@ export class PostsService {
 
   createAndStorePost(title: string, content: string) {
     const postData: Post = { title, content };
-    this.http
-      .post<{ name: string }>(this.firebaseUrl, postData)
-      .subscribe((responseData) => console.log(responseData));
+    return this.http.post<{ name: string }>(this.firebaseUrl, postData);
   }
 
   fetchPosts() {
@@ -28,5 +26,9 @@ export class PostsService {
         return postsArr;
       })
     );
+  }
+
+  deletePosts() {
+    return this.http.delete(this.firebaseUrl);
   }
 }
