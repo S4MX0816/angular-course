@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,17 @@ export class AppComponent {
   private fetchPosts() {
     this.http
       .get(`${this.firebaseUrl}/posts.json`)
+      .pipe(
+        map((responseData) => {
+          const postsArr = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              postsArr.push({ ...responseData[key], id: key });
+            }
+          }
+          return postsArr;
+        })
+      )
       .subscribe((posts) => console.log(posts));
   }
 }
