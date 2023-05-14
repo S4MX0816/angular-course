@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
 import { Subject, catchError, map, throwError } from 'rxjs';
@@ -18,10 +18,14 @@ export class PostsService {
   }
 
   fetchPosts() {
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'pretty');
+    searchParams = searchParams.append('custom', 'key');
     this.errorSubject.next(null);
     return this.http
       .get<{ [k: string]: Post }>(this.firebaseUrl, {
         headers: new HttpHeaders({ 'custom-header': 'Hello' }),
+        params: searchParams,
       })
       .pipe(
         map((responseData) => {
