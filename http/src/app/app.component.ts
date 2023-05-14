@@ -9,7 +9,7 @@ import { Post } from './post.model';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
   firebaseUrl = 'https://angular-course-8c9bb-default-rtdb.firebaseio.com';
 
   constructor(private http: HttpClient) {}
@@ -48,6 +48,8 @@ export class AppComponent {
           return postsArr;
         })
       )
-      .subscribe((posts) => console.log(posts));
+      .subscribe((posts) => {
+        this.loadedPosts = posts;
+      });
   }
 }
