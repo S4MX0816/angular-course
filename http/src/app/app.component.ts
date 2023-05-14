@@ -12,7 +12,9 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchPosts();
+  }
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
@@ -23,9 +25,16 @@ export class AppComponent {
 
   onFetchPosts() {
     // Send Http request
+    this.fetchPosts();
   }
 
   onClearPosts() {
     // Send Http request
+  }
+
+  private fetchPosts() {
+    this.http
+      .get(`${this.firebaseUrl}/posts.json`)
+      .subscribe((posts) => console.log(posts));
   }
 }
