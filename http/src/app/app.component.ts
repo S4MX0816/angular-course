@@ -11,8 +11,8 @@ import { PostsService } from './posts.service';
 })
 export class AppComponent {
   loadedPosts: Post[] = [];
-
   isFetching = false;
+  error = null;
 
   constructor(private postsService: PostsService) {}
 
@@ -38,9 +38,15 @@ export class AppComponent {
 
   private fetchPosts() {
     this.isFetching = true;
-    this.postsService.fetchPosts().subscribe((posts) => {
-      this.isFetching = false;
-      this.loadedPosts = posts;
-    });
+    this.error = null;
+    this.postsService.fetchPosts().subscribe(
+      (posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
+      },
+      (err) => {
+        this.error = err.error.error;
+      }
+    );
   }
 }

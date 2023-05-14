@@ -58,11 +58,18 @@
           <p>{{ post.content }}</p>
         </li>
       </ul>
-      <div *ngIf="isFetching" class="loadingio-spinner-ripple-wsf5cxo48ch">
+      <div
+        *ngIf="isFetching && !error"
+        class="loadingio-spinner-ripple-wsf5cxo48ch"
+      >
         <div class="ldio-japzwhp0h9j">
           <div></div>
           <div></div>
         </div>
+      </div>
+      <div class="alert alert-danger" *ngIf="error">
+        <h1>An error Occurred!</h1>
+        <p>{{ error }}</p>
       </div>
     </div>
   </div>
