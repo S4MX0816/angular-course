@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: false,
 })
 export class SortPipe implements PipeTransform {
-  transform<T extends Record<string, any>>(value: T[], propName: keyof T): any {
+  transform<T extends Record<string, any>>(value: T[], propName: keyof T): T[] {
     value.sort((a, b) => a[propName].localeCompare(b[propName]));
     return value;
   }
