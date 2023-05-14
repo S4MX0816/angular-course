@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   loadedPosts = [];
+  firebaseUrl = 'https://angular-course-8c9bb-default-rtdb.firebaseio.com';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +16,9 @@ export class AppComponent {
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
-    console.log(postData);
+    this.http
+      .post(`${this.firebaseUrl}/posts.json`, postData)
+      .subscribe((responseData) => console.log(responseData));
   }
 
   onFetchPosts() {
