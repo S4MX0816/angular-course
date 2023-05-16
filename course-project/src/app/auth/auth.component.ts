@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from './auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -33,9 +34,8 @@ export class AuthComponent {
           console.log(res);
           this.isLoading = false;
         },
-        error: (err) => {
-          console.log(err);
-          this.error = 'An error occurred!';
+        error: (errorMessage: string) => {
+          this.error = errorMessage;
           this.isLoading = false;
         },
       });
