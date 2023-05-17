@@ -24,13 +24,7 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.authService.userSubject.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.http.get<Recipe[]>(this.firebaseUrl, {
-          params: new HttpParams().set('auth', user.token),
-        });
-      }),
+    return this.http.get<Recipe[]>(this.firebaseUrl).pipe(
       map((recipes) => {
         return recipes.map((recipe) => {
           return {
