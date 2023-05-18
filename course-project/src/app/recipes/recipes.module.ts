@@ -10,18 +10,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RecipesRoutingModule } from './recipes.routing.module';
 
-const recipeComponents = [
-  RecipesComponent,
-  RecipeListComponent,
-  RecipeDetailComponent,
-  RecipeItemComponent,
-  RecipeStartComponent,
-  RecipeEditComponent,
-];
-
 @NgModule({
-  declarations: [...recipeComponents],
+  declarations: [
+    RecipesComponent,
+    RecipeListComponent,
+    RecipeDetailComponent,
+    RecipeItemComponent,
+    RecipeStartComponent,
+    RecipeEditComponent,
+  ],
   imports: [ReactiveFormsModule, CommonModule, RecipesRoutingModule],
-  exports: [...recipeComponents],
 })
 export class RecipesModule {}
