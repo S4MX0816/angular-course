@@ -58,5 +58,7 @@ import { PlaceholderDirective } from './shared/placeholder/placeholder.directive
     },
   ],
   bootstrap: [AppComponent],
+  // Old way of creating dynamic components
+  // entryComponents: [AlertComponent],
 })
 export class AppModule {}
