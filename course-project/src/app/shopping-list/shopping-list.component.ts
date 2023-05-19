@@ -4,8 +4,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { LoggingService } from '../logging.service';
-import * as fromShoppingList from './store/shopping-list.reducer';
 import * as ShoppingListAction from './store/shopping-list.actions';
+import * as formApp from '../store/app.reducer';
 
 @Component({
   selector: 'app-shopping-list',
@@ -17,7 +17,7 @@ export class ShoppingListComponent implements OnInit {
 
   constructor(
     private loggingService: LoggingService,
-    private store: Store<fromShoppingList.AppState>
+    private store: Store<formApp.AppState>
   ) {}
 
   ngOnInit(): void {
