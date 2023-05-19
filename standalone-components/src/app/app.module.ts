@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-import { SharedModule } from './shared/shared.module';
 import { DetailsComponent } from './welcome/details/details.component';
 
 @NgModule({
