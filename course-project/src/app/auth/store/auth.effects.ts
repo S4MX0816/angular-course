@@ -1,6 +1,6 @@
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import * as AuthActions from './auth.actions';
 import { environment } from 'src/environments/environment';
@@ -16,9 +16,72 @@ export interface AuthResponseData {
   registered?: boolean;
 }
 
+const handleAuthentication = (
+  expiresIn: number,
+  email: string,
+  userId: string,
+  token: string
+) => {
+  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  return new AuthActions.AuthenticateSuccess({
+    email,
+    userId,
+    token,
+    expirationDate,
+  });
+};
+
+const handleError = (errorResp: HttpErrorResponse) => {
+  let errorMessage = 'An unknown error occurred!';
+  if (!errorResp.error || !errorResp.error.error) {
+    of(new AuthActions.AuthenticateFail(errorMessage));
+  }
+  switch (errorResp.error.error.message) {
+    case 'EMAIL_EXISTS': {
+      errorMessage = 'This email exists already.';
+      break;
+    }
+    case 'EMAIL_NOT_FOUND': {
+      errorMessage = 'This email does not exist.';
+      break;
+    }
+    case 'INVALID_PASSWORD': {
+      errorMessage = 'This password is not correct.';
+      break;
+    }
+  }
+  return of(new AuthActions.AuthenticateFail(errorMessage));
+};
+
 @Injectable()
 export class AuthEffects {
-  authSignUp = createEffect(() => this.actions$.pipe(AuthActions.SIGNUP_START));
+  authSignUp = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.SIGNUP_START),
+      switchMap((signupAction: AuthActions.SignupStart) => {
+        return this.http
+          .post<AuthResponseData>(
+            `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseApiKey}`,
+            {
+              email: signupAction.payload.email,
+              password: signupAction.payload.password,
+              returnSecureToken: true,
+            }
+          )
+          .pipe(
+            map((resData) =>
+              handleAuthentication(
+                +resData.expiresIn,
+                resData.email,
+                resData.localId,
+                resData.idToken
+              )
+            ),
+            catchError((errorRes) => handleError(errorRes))
+          );
+      })
+    )
+  );
 
   authLogin = createEffect(() =>
     this.actions$.pipe(
@@ -34,38 +97,15 @@ export class AuthEffects {
             }
           )
           .pipe(
-            map((resData) => {
-              const expirationDate = new Date(
-                new Date().getTime() + +resData.expiresIn * 1000
-              );
-              return new AuthActions.AuthenticateSuccess({
-                email: resData.email,
-                userId: resData.localId,
-                token: resData.idToken,
-                expirationDate,
-              });
-            }),
-            catchError((errorResp) => {
-              let errorMessage = 'An unknown error occurred!';
-              if (!errorResp.error || !errorResp.error.error) {
-                of(new AuthActions.AuthenticateFail(errorMessage));
-              }
-              switch (errorResp.error.error.message) {
-                case 'EMAIL_EXISTS': {
-                  errorMessage = 'This email exists already.';
-                  break;
-                }
-                case 'EMAIL_NOT_FOUND': {
-                  errorMessage = 'This email does not exist.';
-                  break;
-                }
-                case 'INVALID_PASSWORD': {
-                  errorMessage = 'This password is not correct.';
-                  break;
-                }
-              }
-              return of(new AuthActions.AuthenticateFail(errorMessage));
-            })
+            map((resData) =>
+              handleAuthentication(
+                +resData.expiresIn,
+                resData.email,
+                resData.localId,
+                resData.idToken
+              )
+            ),
+            catchError((errorResp) => handleError(errorResp))
           );
       })
     )
