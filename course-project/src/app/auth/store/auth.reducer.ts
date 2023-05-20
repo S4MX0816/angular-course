@@ -61,6 +61,11 @@ export function AuthReducer(
         authError: null,
       };
     }
+    case AuthActions.AUTO_LOGIN: {
+      return {
+        ...state,
+      };
+    }
     default: {
       return state;
     }
