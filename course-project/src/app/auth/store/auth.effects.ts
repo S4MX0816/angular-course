@@ -7,6 +7,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User } from '../user.model';
 import * as AuthActions from './auth.actions';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth.service';
 
 export interface AuthResponseData {
   idToken: string;
@@ -72,6 +73,9 @@ export class AuthEffects {
             }
           )
           .pipe(
+            tap((resData) =>
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000)
+            ),
             map((resData) =>
               handleAuthentication(
                 +resData.expiresIn,
@@ -100,6 +104,9 @@ export class AuthEffects {
             }
           )
           .pipe(
+            tap((resData) =>
+              this.authService.setLogoutTimer(+resData.expiresIn * 1000)
+            ),
             map((resData) =>
               handleAuthentication(
                 +resData.expiresIn,
@@ -117,7 +124,7 @@ export class AuthEffects {
   authRedirect = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap(() => {
           this.router.navigate(['/']);
         })
@@ -147,6 +154,10 @@ export class AuthEffects {
         );
 
         if (loadedUser.token) {
+          const expirationDuration =
+            new Date(userData._tokenExpirationDate).getTime() -
+            new Date().getTime();
+          this.authService.setLogoutTimer(expirationDuration);
           return new AuthActions.AuthenticateSuccess({
             email: loadedUser.email,
             userId: loadedUser.id,
@@ -164,7 +175,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.LOGOUT),
-        tap(() => localStorage.removeItem('userData'))
+        tap(() => {
+          this.authService.clearLogoutTimer();
+          localStorage.removeItem('userData');
+          this.router.navigate(['/auth']);
+        })
       ),
     { dispatch: false }
   );
@@ -172,6 +187,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 }
