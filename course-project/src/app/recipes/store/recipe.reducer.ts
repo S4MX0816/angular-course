@@ -1,5 +1,5 @@
 import { Recipe } from '../recipe.model';
-import { FETCH_RECIPES, RecipeActions, SET_RECIPES } from './recipe.actions';
+import * as RecipeActions from './recipe.actions';
 
 export interface State {
   recipes: Recipe[];
@@ -11,14 +11,40 @@ const initialState: State = {
 
 export function recipeReducer(
   state = initialState,
-  action: RecipeActions
+  action: RecipeActions.RecipeActions
 ): State {
   switch (action.type) {
-    case SET_RECIPES: {
-      return { ...state, recipes: [...action.payload] };
+    case RecipeActions.SET_RECIPES: {
+      return {
+        ...state,
+        recipes: [...action.payload],
+      };
     }
-    case FETCH_RECIPES: {
-      return { ...state };
+    case RecipeActions.ADD_RECIPE: {
+      return {
+        ...state,
+        recipes: [...state.recipes, action.payload],
+      };
+    }
+    case RecipeActions.UPDATE_RECIPE: {
+      const updateRecipe = {
+        ...state.recipes[action.payload.index],
+        ...action.payload.newRecipe,
+      };
+
+      const updateRecipes = [...state.recipes];
+      updateRecipes[action.payload.index] = updateRecipe;
+
+      return {
+        ...state,
+        recipes: updateRecipes,
+      };
+    }
+    case RecipeActions.DELETE_RECIPE: {
+      return {
+        ...state,
+        recipes: state.recipes.filter((_, index) => index !== action.payload),
+      };
     }
     default: {
       return { ...state };
