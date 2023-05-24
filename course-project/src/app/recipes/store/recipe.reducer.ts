@@ -1,5 +1,5 @@
 import { Recipe } from '../recipe.model';
-import { RecipeActions, SET_RECIPES } from './recipe.actions';
+import { FETCH_RECIPES, RecipeActions, SET_RECIPES } from './recipe.actions';
 
 export interface State {
   recipes: Recipe[];
@@ -16,6 +16,9 @@ export function recipeReducer(
   switch (action.type) {
     case SET_RECIPES: {
       return { ...state, recipes: [...action.payload] };
+    }
+    case FETCH_RECIPES: {
+      return { ...state };
     }
     default: {
       return { ...state };
