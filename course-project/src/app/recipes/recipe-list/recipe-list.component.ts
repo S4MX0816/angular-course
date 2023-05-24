@@ -11,9 +11,8 @@ import * as fromApp from '../../store/app.reducer';
   templateUrl: './recipe-list.component.html',
   styleUrls: ['./recipe-list.component.css'],
 })
-export class RecipeListComponent implements OnInit, OnDestroy {
+export class RecipeListComponent implements OnInit {
   recipes: Recipe[];
-  subscription: Subscription;
 
   constructor(
     private router: Router,
@@ -32,9 +31,5 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   onNewRecipe() {
     this.router.navigate(['new'], { relativeTo: this.route });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }
