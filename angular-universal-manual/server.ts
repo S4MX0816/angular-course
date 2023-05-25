@@ -20,9 +20,9 @@ const template = readFileSync(
   join(distFolder, 'browser', 'index.html')
 ).toString();
 
-const {
-  AppServerModule,
-} = require('./dist/angular-universal-manual/server/main');
+// const {
+//   AppServerModule,
+// } = require('./dist/angular-universal-manual/server/main');
 
 app.engine('html', (_, options: any, callback) => {
   renderModule(AppServerModule, {
