@@ -1,4 +1,10 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
@@ -52,11 +58,25 @@ describe('UserComponent', () => {
   });
 
   it('should fetch data successfully if called asynchronously', waitForAsync(() => {
-    const dataService = fixture.debugElement.injector.get(DataService);
-    spyOn(dataService, 'getDetails').and.returnValue(Promise.resolve('Data'))();
+    const fixtureV2 = TestBed.createComponent(UserComponent);
+    const componentV2 = fixtureV2.componentInstance;
+    const dataService = fixtureV2.debugElement.injector.get(DataService);
+    spyOn(dataService, 'getDetails').and.returnValue(
+      Promise.resolve('Data Mocked')
+    );
+    fixtureV2.detectChanges();
     fixture.whenStable().then(() => {
-      dataService.getDetails().then((res) => console.log(res));
-      expect(component.data).toBe('Data');
+      expect(componentV2.data).toBe('Data Mocked');
     });
+  }));
+
+  it('should fetch data successfully if called fake asynchronously', fakeAsync(() => {
+    const fixtureV2 = TestBed.createComponent(UserComponent);
+    const componentV2 = fixtureV2.componentInstance;
+    const dataService = fixtureV2.debugElement.injector.get(DataService);
+    spyOn(dataService, 'getDetails').and.returnValue(Promise.resolve('Data'));
+    fixtureV2.detectChanges();
+    tick();
+    expect(componentV2.data).toBe('Data');
   }));
 });
