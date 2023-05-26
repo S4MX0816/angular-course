@@ -32,6 +32,7 @@ import { animate, state, transition, trigger } from '@angular/animations';
         style({
           'background-color': 'red',
           transform: 'translateX(0) scale(1)',
+          borderRadius: 0,
         })
       ),
       state(
@@ -39,6 +40,7 @@ import { animate, state, transition, trigger } from '@angular/animations';
         style({
           backgroundColor: 'blue',
           transform: 'translateX(100px) scale(1)',
+          borderRadius: 0,
         })
       ),
       state(
@@ -46,11 +48,23 @@ import { animate, state, transition, trigger } from '@angular/animations';
         style({
           backgroundColor: 'green',
           transform: 'translateX(0) scale(0.5)',
+          borderRadius: 0,
         })
       ),
       transition('normal => highlighted', animate(300)),
       transition('highlighted => normal', animate(800)),
-      transition('shrunken <=> *', animate(500)),
+      transition('shrunken <=> *', [
+        style({
+          backgroundColor: 'orangered',
+        }),
+        animate(
+          1000,
+          style({
+            borderRadius: '50px',
+          })
+        ),
+        animate(500),
+      ]),
     ]),
   ],
 })
