@@ -26,10 +26,14 @@ import { style } from '@angular/animations';
   ],
 })
 export class AppComponent {
-  state = 'normal';
+  state: 'normal' | 'highlighted' = 'normal';
   list = ['Milk', 'Sugar', 'Bread'];
 
   onAdd(item) {
     this.list.push(item);
+  }
+
+  onAnimate() {
+    this.state = this.state === 'normal' ? 'highlighted' : 'normal';
   }
 }
